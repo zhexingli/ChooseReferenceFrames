@@ -134,7 +134,7 @@ def ChooseRefFrames(red_dir,filter_id,RedConfig = None):
             if line.startswith('/'):
                 col = line.split()
                 if float(col[9]) == 0.00:
-                    float(col[9]) = 1.00
+                    col[9] = 1.00
                     
                 if (float(col[10]) < sky_limit
                     and float(col[11]) < skysigma_limit
