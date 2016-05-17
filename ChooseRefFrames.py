@@ -133,15 +133,16 @@ def ChooseRefFrames(red_dir,filter_id,RedConfig = None):
         for line in infile:
             if line.startswith('/'):
                 col = line.split()
-                if float(col[9]) == 0.00:
-                    col[9] = 1.00
-                    
-                if (float(col[10]) < sky_limit
+                if float(col[9]) <= 0.00:
+                    pass
+                elif (float(col[10]) < sky_limit
                     and float(col[11]) < skysigma_limit
                     and float(col[12]) < FWHM_limit
                     and float(col[15]) > ellipticity_limit
                     and (float(col[10]) / float(col[9])) <= 10):
                     candidate.append(col[0])
+                else:
+                    pass
            
         # List the dates of all images that are picked out.
 
