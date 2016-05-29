@@ -14,7 +14,7 @@
 #                           in the directory.
 # Zhexing Li    2016-04-05  Improved the code on the criteria for selecting reference
 #			    frame candidates.
-# Zhexing Li    2016-05-13  Further improved reference frame candidates quality.
+# Zhexing Li    2016-05-29  Further improved reference frame candidates quality.
 #
 ################################################################################
 
@@ -97,12 +97,35 @@ def ChooseRefFrames(red_dir,filter_id,RedConfig = None):
         skysigma = []
         FWHM = []
         ellipticity = []
+        counts = []
+        
+        for line in infile:
+            if line.startswith('/'):
+                col = line.split()
+                counts.append(col[16])
+        
+        counts = map(float,counts)
+
+        count = 0
+        
+        for item in counts:
+            if item > 50:
+                count = count + 1
+            else:
+                pass
+
+        if count == 0:
+            no = np.median(counts)
+        else:
+            no = 50
+            
+	infile.seek(0)
 
         for line in infile:
             if line.startswith('/'):
                 col = line.split()
 		if (float(col[12]) != -1 and float(col[13]) != -1 and float(col[14]) != -1
-                    and float(col[15]) != -1 and float(col[16]) > 50 and float(col[17]) != -1):
+                    and float(col[15]) != -1 and float(col[16]) > no and float(col[17]) != -1):
                     name.append(col[0])
                     sky.append(col[10])
                     skysigma.append(col[11])
